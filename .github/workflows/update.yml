@@ -1,17 +1,16 @@
 name: Auto Update Sooka M3U
 
-# Trigger workflow
 on:
   schedule:
-    - cron: "*/30 * * * *"   # jalan setiap 30 minit
-  workflow_dispatch:          # boleh run manual dari GitHub UI
+    - cron: "*/30 * * * *"  # jalan setiap 30 minit
+  workflow_dispatch:        # boleh run manual
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout repo dengan token supaya boleh push balik
+      # 1. Checkout repo dengan token supaya workflow boleh push
       - name: Checkout repo
         uses: actions/checkout@v3
         with:
@@ -31,7 +30,7 @@ jobs:
       - name: Run main.py
         run: python main.py
 
-      # 5. Commit & Push changes ke repo
+      # 5. Commit & Push
       - name: Commit & Push sooka_auto.m3u
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
