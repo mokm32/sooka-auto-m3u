@@ -1,8 +1,8 @@
-import time, requests, json, os
+import requests
 from datetime import datetime
 
-# API & Channel
-TOKEN_URL = "https://api.sooka.my/token"  # ubah ikut endpoint sebenar
+# API & channel config
+TOKEN_URL = "https://api.sooka.my/token"  # ganti ikut endpoint sebenar
 LICENSE_URL = "https://license.sooka.my/{cid}"
 MPD_URL = "https://l01.dp.sooka.my/{cid}/linear/index.mpd"
 
@@ -12,7 +12,7 @@ CHANNELS = {
         "contentId": "7e61c7b6-0aa1-4e1b-978f-5247a3757f73",
         "logo": "https://example.com/logo601.png"
     }
-    # tambah channel lain di sini
+    # Tambah channel lain di sini
 }
 
 HEADERS = {
