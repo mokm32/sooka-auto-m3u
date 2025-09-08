@@ -1,32 +1,41 @@
-name: Update M3U
+name: Auto Update Sooka M3U
 
+# Trigger workflow
 on:
   schedule:
-    - cron: "*/30 * * * *"  # run setiap 30 minit
-  workflow_dispatch:        # boleh run manual dari GitHub
+    - cron: "*/30 * * * *"   # jalan setiap 30 minit
+  workflow_dispatch:          # boleh run manual dari GitHub UI
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
+      # 1. Checkout repo dengan token supaya boleh push balik
       - name: Checkout repo
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
+      # 2. Setup Python
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
 
-      - name: Install requests
+      # 3. Install dependencies
+      - name: Install dependencies
         run: pip install requests
 
-      - name: Run script
+      # 4. Run main.py untuk generate sooka_auto.m3u
+      - name: Run main.py
         run: python main.py
 
-      - name: Commit & Push
+      # 5. Commit & Push changes ke repo
+      - name: Commit & Push sooka_auto.m3u
         run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
           git add sooka_auto.m3u
-          git commit -m "Auto update m3u [skip ci]" || echo "No changes"
+          git commit -m "Auto update sooka_auto.m3u [skip ci]" || echo "No changes to commit"
           git push
