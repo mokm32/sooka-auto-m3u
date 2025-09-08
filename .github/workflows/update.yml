@@ -1,0 +1,32 @@
+name: Update M3U
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"  # run setiap 30 minit
+  workflow_dispatch:        # boleh run manual dari GitHub
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install requests
+        run: pip install requests
+
+      - name: Run script
+        run: python main.py
+
+      - name: Commit & Push
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add sooka_auto.m3u
+          git commit -m "Auto update m3u [skip ci]" || echo "No changes"
+          git push
